@@ -2,19 +2,30 @@ body {
     background-color: black;
 }
 
+@import url(https://cdn.rawgit.com/tonsky/FiraCode/1.204/distr/fira_code.css);
 div.header {
     width: 60vw;
     height: 70vh;
     margin: 15vh 20vw;
 
-    font-size: 3vw;
+    font-size: 3.5vw;
     text-align: center;
 
-    font-family: 'Holtwood One SC', serif;
+    font-family: 'Fira Code', monospace;
 }
 
 div.header > p {
     display: inline;
+}
+
+div.header > a {
+    display: inline-block;
+    margin-top: 2vh;
+    text-decoration: none;
+}
+
+div.header > a:hover {
+    text-decoration: underline;
 }
 
 canvas#pyreeheader {
