@@ -61,6 +61,10 @@ div.booking {
     width: 60vw;
     margin: 0 auto;
     margin-bottom: 20vh;
+    min-height: 60vh;
+    padding-top: 10vh;
+
+    text-align: center;
 }
 
 h3 {
