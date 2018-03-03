@@ -117,6 +117,12 @@ function getRandomInt(min, max) {
 function tickGL()
 {
     var canvas = document.getElementById("pyreeheader");
+
+    var intFrameWidth = window.innerWidth;
+    canvas.style.width = Math.floor(intFrameWidth * 0.6) + "px";
+    var intFrameHeight = window.innerHeight;
+    canvas.style.height = Math.floor(intFrameHeight * 0.7 * 0.85) + "px";
+
     canvas.width = canvas.clientWidth;
     canvas.height = canvas.clientHeight;
 
