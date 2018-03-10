@@ -1,0 +1,14 @@
+{
+  "compilerOptions": {
+    "noImplicitAny": true,
+    "removeComments": true,
+    "preserveConstEnums": true,
+    "sourceMap": true
+  },
+  "files": [
+    "pyreeheader.ts",
+    "src/BaseGLProgram.ts",
+    "src/RainbowPyree.ts",
+    "WebGL2-TypeScript.d.ts"
+  ]
+}
