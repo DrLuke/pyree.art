@@ -2,6 +2,7 @@
 
 import { RainbowPyree } from "./src/RainbowPyree"
 import {BaseGLProgram} from "./src/BaseGLProgram";
+import {LogoPyree} from "./src/LogoPyree";
 
 
 function getRandomInt(min: number, max: number): number {
@@ -29,10 +30,13 @@ window.initGL = function(): boolean {
 
         // Choose random program to run
         let whichProgram = getRandomInt(0, 1);
-        whichProgram = 0;   //TODO: remove hardcode
+        whichProgram = 1;   //TODO: remove hardcode
         switch (whichProgram) {
             case(0): {
                 program = new RainbowPyree(gl);
+            }
+            case(1): {
+                program = new LogoPyree(gl);
             }
         }
 
