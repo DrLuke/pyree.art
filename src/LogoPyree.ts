@@ -12,6 +12,7 @@ export class LogoPyree extends BaseGLProgram {
     startTime: number;
     imageLoaded: boolean = false;
 
+    mode: number;
 
     init() {
         super.init();
@@ -58,6 +59,10 @@ export class LogoPyree extends BaseGLProgram {
 
         let d = new Date();
         this.startTime = d.getTime();
+
+        let min: number = 1;
+        let max: number = 2;
+        this.mode = Math.floor(Math.random() * (max - min + 1)) + min;
     }
 
     loadTexture() {
@@ -108,6 +113,11 @@ export class LogoPyree extends BaseGLProgram {
         if(loc != -1)
         {
             gl.uniform1f(loc, time);
+        }
+        loc = gl.getUniformLocation(this.shaderProgram, "mode");
+        if(loc != -1)
+        {
+            gl.uniform1i(loc, this.mode);
         }
         loc = gl.getUniformLocation(this.shaderProgram, "res");
         if(loc != -1)

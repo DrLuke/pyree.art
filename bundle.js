@@ -161,6 +161,9 @@ var LogoPyree = /** @class */ (function (_super) {
         gl.enableVertexAttribArray(0);
         var d = new Date();
         this.startTime = d.getTime();
+        var min = 1;
+        var max = 2;
+        this.mode = Math.floor(Math.random() * (max - min + 1)) + min;
     };
     LogoPyree.prototype.loadTexture = function () {
         var gl = this.gl;
@@ -197,6 +200,10 @@ var LogoPyree = /** @class */ (function (_super) {
         var loc = gl.getUniformLocation(this.shaderProgram, "iTime");
         if (loc != -1) {
             gl.uniform1f(loc, time);
+        }
+        loc = gl.getUniformLocation(this.shaderProgram, "mode");
+        if (loc != -1) {
+            gl.uniform1i(loc, this.mode);
         }
         loc = gl.getUniformLocation(this.shaderProgram, "res");
         if (loc != -1) {

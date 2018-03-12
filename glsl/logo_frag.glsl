@@ -2,11 +2,13 @@
 precision highp float;
 uniform float iTime;
 uniform vec2 res;
-uniform float mode;
+uniform int mode;
 out vec4 outCol;
 
 uniform sampler2D logoTex;
 uniform vec2 logoRes;
+
+
 
 #define time (iTime/1000.)
 
@@ -181,18 +183,42 @@ vec4 anim1()
     return vec4(col * mask * intensity * coords.z, 1);
 }
 
+vec4 anim2()
+{
+    float animProg = clamp(time * 0.5, 0., 1.);
+
+    vec3 coords = reliefCoords();
+
+    vec4 reliefText = genReliefText(coords.xy);
+
+    vec2 sdf = texture(logoTex, coords.xy).rg;
+
+    vec3 col = vec3(0);
+    col = vec3(0.95, 0, 0.8);
+
+    #define anim2MainCol vec3(0.95, 0., 0.6+coords.x*0.2)
+    vec3 light1Pos = mix(vec3(1., 1.0, 0.5) , vec3(0.5,0.5,1.2), easeInCubic(ramp(0., 0.5, animProg)));
+    col = light3(reliefText.xyz, vec3(coords.xy, 0), light1Pos) * anim2MainCol * 1.4 * easeInCubic(ramp(0., 0.5, animProg));
+
+    #define anim2Highlight1Col vec3(0, 0.5, 0.95)
+    vec3 light2Pos = mix(vec3(0.3,0.3,0.2) , vec3(0.1,0.1,0.0), easeInCubic(ramp(0.2, 0.3, animProg)));
+    col += light1(reliefText.xyz, vec3(coords.xy, 0), light2Pos) * anim2Highlight1Col * 5. * easeInCubic(ramp(0.2, 0.6, animProg));
+
+    #define anim2Highlight2Col vec3(-0.3, 0.2, 0.0)
+    col += light3(reliefText.xyz, vec3(coords.xy, 0), vec3(0.9,0.9,0.0)) * anim2Highlight2Col * 3. * easeInCubic(ramp(0.2, 0.6, animProg));
+
+    float mask = smoothstep(0., 0.2, reliefText.a);
+    return vec4(col* mask * coords.z, 1.);
+}
+
 void main()
 {
-    vec2 uv = gl_FragCoord.xy*2. / res - vec2(1);
-    //vec2 uv = gl_FragCoord.xy / res;
-    uv.x *= res.x/res.y;
-
-    vec2 dist = texture(logoTex, uv*vec2(logoRes.y/logoRes.x,-1)).rg;
-    //vec2 dist = texelFetch(logoTex, ivec2(gl_FragCoord.xy)*ivec2(1,-1) + ivec2(0, res.y), 0).aa;
-
-    vec4 relief = genReliefText(reliefCoords().xy);
-
-    outCol = vec4(vec3(0.1+uv.x*0.5, 0.6-uv.x*0.3, 0.8-uv.x*0.2) * light1(relief.xyz, vec3(uv, 0.), vec3(sin(time)*0.5 + 0.5, cos(time)*0.5 + 0.5, .4)) * (smoothstep(0., 0.08, relief.a)), 1.);
-
-    outCol = anim1();
+    if(mode == 1)
+    {
+        outCol = anim1();
+    }
+    if(mode == 2)
+    {
+        outCol = anim2();
+    }
 }
