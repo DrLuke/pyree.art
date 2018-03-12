@@ -186,6 +186,7 @@ vec4 anim1()
 vec4 anim2()
 {
     float animProg = clamp(time * 0.5, 0., 1.);
+    float glistenAnim = mod(time, 10.);
 
     vec3 coords = reliefCoords();
 
@@ -206,6 +207,14 @@ vec4 anim2()
 
     #define anim2Highlight2Col vec3(-0.3, 0.2, 0.0)
     col += light3(reliefText.xyz, vec3(coords.xy, 0), vec3(0.9,0.9,0.0)) * anim2Highlight2Col * 3. * easeInCubic(ramp(0.2, 0.6, animProg));
+
+    #define anim2GlistenCol vec3(0.2, 1., 0.2)
+    #define anim2GlistenWidth 0.05
+    vec3 lightGlistenPos = mix(vec3(0.,0.7,0.0) , vec3(1.2,0.2,0.6), easeInCubic(ramp(1.2, 2., glistenAnim)));
+    float glistenMask = smoothstep(lightGlistenPos.x - anim2GlistenWidth, lightGlistenPos.x, coords.x + coords.y*0.3)
+                        - smoothstep(lightGlistenPos.x, lightGlistenPos.x + anim2GlistenWidth, coords.x + coords.y*0.3);
+    col += light1(reliefText.xyz, vec3(coords.xy, 0), lightGlistenPos) * anim2GlistenCol
+        * glistenMask * easeInCubic(ramp(0., 0.5, animProg)) * 1.;
 
     float mask = smoothstep(0., 0.2, reliefText.a);
     return vec4(col* mask * coords.z, 1.);
